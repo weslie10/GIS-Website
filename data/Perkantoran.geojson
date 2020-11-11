@@ -1,0 +1,11 @@
+{
+"type": "FeatureCollection",
+"name": "Perkantoran",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "Id": 0, "Nama": "Kantor Gubernur" }, "geometry": { "type": "Point", "coordinates": [ 101.4466072110433, 0.516900056616937 ] } },
+{ "type": "Feature", "properties": { "Id": 0, "Nama": "Bandara" }, "geometry": { "type": "Point", "coordinates": [ 101.44638013114799, 0.464481472528447 ] } },
+{ "type": "Feature", "properties": { "Id": 0, "Nama": null }, "geometry": { "type": "Point", "coordinates": [ 101.447073436479982, 0.513326985547188 ] } },
+{ "type": "Feature", "properties": { "Id": 0, "Nama": "Kantor Walikota" }, "geometry": { "type": "Point", "coordinates": [ 101.504099371090646, 0.542766741010548 ] } }
+]
+}

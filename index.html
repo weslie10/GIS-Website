@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map with argis</title>
+    <link rel="stylesheet" href="./leafletjs/leaflet.css" />
+    <script src="./leafletjs/leaflet.js"></script>
+</head>
+<body>
+    <div id="select" style="display: flex; justify-content: center; align-items: center; padding: 10px;"></div>
+</body>
+
+<script>
+    const select = document.createElement("select");
+    select.style.padding = "10px";
+    select.style.fontWeight = "bold";
+
+    const empty = document.createElement("option");
+    empty.value = ""
+    empty.innerText = "----Select GeoJSON----"
+    
+    fetch("data.json").then(res=>res.json()).then(result=>{
+        result.map(ans=>{
+            const option = document.createElement("option");
+            option.value = ans.value
+            option.innerText = ans.show
+            select.appendChild(option)
+        })
+    })
+    
+    const divMap = document.createElement("div");
+    divMap.id = "map";
+    divMap.style.height = "800px";
+
+    select.appendChild(empty);
+    document.getElementById("select").appendChild(select);
+    document.body.appendChild(divMap);
+</script>
+<script src="maps.js"></script>
+</html>

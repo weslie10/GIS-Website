@@ -1,0 +1,58 @@
+[
+    {
+        "show" : "Anak Sungai",
+        "value" : "anakSungai.geojson"
+    },
+    {
+        "show" : "Batas Citra",
+        "value" : "batasCitra.geojson"
+    },
+    {
+        "show" : "Batas Kelurahan",
+        "value" : "batasKelurahan.geojson"
+    },
+    {
+        "show" : "DAS AR",
+        "value" : "DasAR.geojson"
+    },
+    {
+        "show" : "Drainase",
+        "value" : "Drainase.geojson"
+    },
+    {
+        "show" : "Perkantoran",
+        "value" : "Perkantoran.geojson"
+    },
+    {
+        "show" : "Pori-pori jalan",
+        "value" : "PoriJalan.geojson"
+    },
+    {
+        "show" : "Rencana Kolam Retensi",
+        "value" : "RencanaKolamRetensi.geojson"
+    },
+    {
+        "show" : "Sungai Kota Pekanbaru",
+        "value" : "SungaiKotaPekanbaru.geojson"
+    },
+    {
+        "show" : "Sungai Siak",
+        "value" : "SungaiSiak.geojson"
+    },
+    {
+        "show" : "Titik Titik Gengan Banjir",
+        "value" : "Titik2GenganBanjir.geojson"
+    },
+    {
+        "show" : "Titik Kolam Retensi",
+        "value" : "TitikKolamRetensi.geojson"
+    },
+    {
+        "show" : "Titik Sungai",
+        "value" : "TitikSungai.geojson"
+    },
+    {
+        "show" : "Transportasi",
+        "value" : "Titik2GenganBanjir.geojson"
+    }
+]
