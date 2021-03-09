@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map with argis</title>
+    <link rel="stylesheet" href="./leafletjs/leaflet.css" />
+    <script src="./leafletjs/leaflet.js"></script>
+    <link rel="stylesheet" href="cluster/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="cluster/dist/MarkerCluster.Default.css" />
+</head>
+
+<body>
+    <div id="maps" style="height: 800px;"></div>
+    <button onclick="showLine();">Show Data, Check Console</button>
+</body>
+<script src="cluster/src/index.js"></script>
+<script src="cluster/dist/leaflet.markercluster-src.js"></script>
+<script>
+    const randomColor = () => {
+        return `rgb(${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)})`
+    }
+
+    const map = L.map("maps").setView([0.5227016422194704, 101.45118713378908], 12);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: `&copy; 
+            <a href="https://www.openstreetmap.org/copyright">
+                OpenStreetMap
+            </a>
+             contributors, 
+            <a href="https://creativecommons.org/licenses/by-sa/2.0/">
+                CC-BY-SA
+            </a>`,
+        tileSize: 512,
+        zoomOffset: -1,
+    }).addTo(map);
+
+    // let polyline = null;
+    let lines = [];
+    let line = [];
+    
+    var timer = 0;
+    var delay = 100;
+    var prevent = false;
+    map
+        .addEventListener('dblclick', (e) => {
+            clearTimeout(timer);
+            prevent = true;
+            lines.push(line);
+            line = [];
+        })
+        .addEventListener('click', (e) => {
+            // if (polyline !== null) map.removeLayer(polyline)
+            timer = setTimeout(function() {
+                if (prevent) {
+                    prevent = false;
+                }
+                const coord = [e.latlng.lat, e.latlng.lng];
+                    // const marker = L.marker(coord).addTo(map);
+                    line.push(coord);
+
+                    let polyline = L.polyline(line, {
+                        color: "black",
+                        width: 10
+                    }).addTo(map);
+            }, delay);
+        })
+    
+    const showLine = () =>{
+        if(line!==[]){
+            lines.push(line);
+            line = []
+        }
+        console.log(lines);
+    }
+</script>
+</html>

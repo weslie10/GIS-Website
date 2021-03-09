@@ -1,23 +1,22 @@
 let map = L.map("map").setView([0.5227016422194704, 101.45118713378908], 12);
 
 // ----Function----------------------------------------------------------------------------------------
-select.addEventListener('change',(e)=>{
+select.addEventListener('change', (e) => {
     e.preventDefault();
-    if(e.target.value!==""){
-        fetch(`data/${e.target.value}`).then(res=>res.json()).then(result=>{
+    if (e.target.value !== "") {
+        fetch(`data/${e.target.value}`).then(res => res.json()).then(result => {
             makeMap();
-            // cL.geoJSON(result,{style: function(feature){
+            // L.geoJSON(result,{style: function(feature){
             //     return {"color": randomColor()}
-            // }})
+            // }}).addTo(map)
             makeMapFeatures(result.features);
         });
-    }
-    else{
+    } else {
         makeMap();
     }
 });
 
-const randomColor = () =>{
+const randomColor = () => {
     return `rgb(${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)})`
 }
 
@@ -44,65 +43,74 @@ makeMap();
 const makeMapFeatures = (data) => {
     makeMap();
 
-    if(data!==""){
-        let markers = L.markerClusterGroup({ chunkedLoading: true });
+    if (data !== "") {
+        let markers = L.markerClusterGroup({
+            chunkedLoading: true
+        });
         data.map(el => {
             const prop = el.properties;
             let text = "";
-            Object.keys(prop).forEach((key)=> { 
+            Object.keys(prop).forEach((key) => {
                 text += `${key}: ${prop[key]}<br/>`; // key and value
             });
+            console.log(text);
 
-            if(el.geometry.type==="MultiPolygon"){
+            if (el.geometry.type === "MultiPolygon") {
                 const geo = el.geometry.coordinates[0][0]
                 var poly = [];
-                geo.map((element,i) => {
+                geo.map((element, i) => {
                     [element[0], element[1]] = [element[1], element[0]];
                     poly.push(element);
                 });
-                const polygon = L.polygon(poly, { color: randomColor() })
+                const polygon = L.polygon(poly, {
+                        color: randomColor()
+                    })
                     .bindPopup(text)
                     .addTo(map);
-                polygon.on("mouseover",function(e){
+                polygon.on("mouseover", function (e) {
                     this.openPopup();
                 });
-                polygon.on("mouseout",function(e){
+                polygon.on("mouseout", function (e) {
                     this.closePopup();
                 });
-            }
-            else if(el.geometry.type === "Point"){
+            } else if (el.geometry.type === "Point") {
                 let coord = el.geometry.coordinates;
                 [coord[0], coord[1]] = [coord[1], coord[0]];
                 const marker = L.marker(coord)
                     .bindPopup(text)
-                    // .addTo(map);
+                // .addTo(map);
 
                 markers.addLayer(marker);
 
-                marker.on("mouseover",function(e){
+                marker.on("mouseover", function (e) {
                     this.openPopup();
                 });
-                marker.on("mouseout",function(e){
+                marker.on("mouseout", function (e) {
                     this.closePopup();
                 });
 
                 map.addLayer(markers);
-            }
-            else if(el.geometry.type === "MultiLineString"){
+            } else if (el.geometry.type === "MultiLineString") {
                 const geo = el.geometry.coordinates[0]
                 var line = [];
-                geo.map((element,i) => {
+                geo.map((element, i) => {
                     [element[0], element[1]] = [element[1], element[0]];
                     line.push(element);
                 });
-                const polyline = L.polyline(line, { color: randomColor(), width: 5 })
+                const polyline = L.polyline(line, {
+                        color: randomColor(),
+                        width: 5
+                    })
                     .bindPopup(text)
                     .addTo(map);
-                polyline.on("mouseover",function(e){
+                // polyline.on("mouseover",function(e){
+                //     this.openPopup();
+                // });
+                // polyline.on("mouseout",function(e){
+                //     this.closePopup();
+                // });
+                polyline.on("click", function (e) {
                     this.openPopup();
-                });
-                polyline.on("mouseout",function(e){
-                    this.closePopup();
                 });
             }
         });
@@ -117,3 +125,29 @@ const makeMapFeatures = (data) => {
     //     console.log(e.latlng);
     // });
 }
+
+const fetchData = () => {
+    fetch('http://gis-drainase.pocari.id/api/titik_banjir')
+        .then(res => res.json())
+        .then(result => {
+            result.forEach(el=>{
+                const geo = JSON.parse(el.geometry);
+                
+                L.geoJSON(geo)
+                .bindPopup("heheh")
+                .addTo(map)
+                // let coord = geo.coordinates;
+                // [coord[0], coord[1]] = [coord[1], coord[0]];
+                
+                // let text = "";
+                // Object.keys(el).forEach((key) => {
+                //     if(key!="geometry")
+                //         text += `${key}: ${el[key]}<br/>`; 
+                // });
+                // const marker = L.marker(coord)
+                //     .addTo(map)
+                //     .bindPopup(text)
+            })
+        })
+}
+fetchData();

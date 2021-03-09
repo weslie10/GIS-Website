@@ -1,0 +1,217 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* :root {
+    --main-color: blue;
+} */
+
+#map {
+    height: 100%;
+}
+
+/* html part */
+#header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    height: 9vh;
+    /* background: var(--main-color); */
+    color: white;
+    border-bottom: 1px solid black;
+}
+
+.hero {
+    padding: 20px;
+    font-family: 'Dancing Script', cursive;
+}
+
+#content {
+    height: 91vh;
+    position: relative;
+    overflow: hidden;
+}
+/* end html part */
+
+/* obj */
+#chooseObj {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    grid-gap: 10px;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+#chooseObj button {
+    padding: 20px;
+    height: min-content;
+    background: transparent;
+    outline: none;
+    border: none;
+    color: white;
+    font-size: 1.3em;
+}
+
+#chooseObj button:hover{
+    color: orangered!important;
+    font-weight: bold;
+    text-decoration: underline;
+}
+/* end obj */
+
+.activeObj {
+    color: orangered!important;
+    font-weight: bold;
+}
+
+/* info */
+#info-btn {
+    position: absolute;
+    top: 5vw;
+    right: 1vw;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: white;
+    outline: none;
+    z-index: 500;
+    animation: move 1s alternate ease-in-out infinite;
+}
+
+@keyframes move {
+    to{
+        transform: translateY(50px);
+    }
+}
+
+#info {
+    position: absolute;
+    transform: translateX(600px);
+    overflow: auto;
+    opacity: 0;
+    top: 0;
+    right: 0;
+    width: 600px;
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    border: 1px solid black;
+    background-color: white;
+    transition: all .5s ease-in-out;
+    z-index: 1001;
+    box-shadow: -3px 0px 20px 1px rgba(0,0,0,0.34);
+}
+
+#info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--main-color);
+    color: white;
+}
+
+#info-header h3 {
+    padding-left: 20px;
+}
+
+#close-info {
+    background: transparent;
+    border: none;
+    font-size: 1.5em;
+    outline: none;
+    padding: 20px;
+    color: white;
+}
+
+#close-info:hover {
+    color: lightgray;
+}
+
+#info-body {
+    padding: 20px;
+}
+
+.displayInfo {
+    transform: translateX(0) !important;
+    opacity: 1 !important;
+}
+/* end info */
+
+/* filter */
+#filter-open {
+    position: absolute;
+    top: 10px;
+    left: 60px;
+    transform: translateY(50px);
+    opacity: 0;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: white;
+    transition: all .5s ease-in-out;
+    outline: none;
+    z-index: 500;
+}
+#filter {
+    position: absolute;
+    border: 1px solid black;
+    border-radius: 10px;
+    top: 10px;
+    left: 60px;
+    padding: 20px;
+    width: 300px;
+    transform: translateY(-300px);
+    opacity: 0;
+    background: white;
+    transition: all .5s ease-in-out;
+    z-index: 1001;
+}
+
+#filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+#close-filter {
+    background: transparent;
+    border: none;
+    font-size: 1.5em;
+    outline: none;
+    padding: 20px;
+}
+
+#close-filter:hover {
+    color: lightgray;
+}
+
+#filter input, #filter button, #filter select {
+    padding: 10px;
+    outline: none;
+}
+
+#filter button {
+    width: min-content;
+    background: white;
+}
+
+#filter-btn {
+    margin-top: 10px;
+}
+
+#no-filter {
+    color: red;
+}
+
+.displayFilter, .displayButton {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+}
+/* end filter */
+
+hr{
+    margin-top: 0!important;
+}

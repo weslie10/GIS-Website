@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    table, td, tr, th{
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+    td, th{
+        padding: 10px;
+    }
+    table {
+        margin: 20px;
+    }
+
+</style>
+<body>
+    <form action="">
+        <table>
+            <tr>
+                <td>File</td>
+                <td>:</td>
+                <td><input type="file" id="file" /></td>
+            </tr>
+            <tr>
+                <td colspan="3"><input type="submit" id="btn" /></td>
+            </tr>
+        </table>
+    </form>
+    <div class="dvExcel"></div>
+    <div class="dvExcel"></div>
+    <div class="dvExcel"></div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script>
+<script>
+    const file = document.getElementById('file');
+    const btn = document.getElementById('btn');
+    // const sheet = document.getElementById('sheet');
+    btn.addEventListener('click',(e)=>{
+        e.preventDefault();
+        //Validate whether File is valid Excel file.
+        var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx)$/;
+        if (regex.test(file.value.toLowerCase())) {
+            if (typeof (FileReader) != "undefined") {
+                var reader = new FileReader();
+ 
+                //For Browsers other than IE.
+                if (reader.readAsBinaryString) {
+                    reader.onload = function (e) {
+                        file.value = "";
+                        ProcessExcel(e.target.result);
+                        // console.log(e.target.result);
+                    };
+                    reader.readAsBinaryString(file.files[0]);
+                } else {
+                    //For IE Browser.
+                    reader.onload = function (e) {
+                        var data = "";
+                        var bytes = new Uint8Array(e.target.result);
+                        for (var i = 0; i < bytes.byteLength; i++) {
+                            data += String.fromCharCode(bytes[i]);
+                        }
+                        ProcessExcel(data);
+                        // console.log(data);
+                    };
+                    reader.readAsArrayBuffer(file.files[0]);
+                }
+            } else {
+                alert("This browser does not support HTML5.");
+            }
+        } else {
+            alert("Please upload a valid Excel file.");
+        }
+    })
+
+    const ProcessExcel = (data) => {
+        
+        let drainase = [];
+        // const rows = [[
+        //     "Lat",
+        //     "Long",
+        //     "Nama Jalan",
+        //     "Nama Perumahan(Jika survey perumahan)",
+        //     "Panjang (m/km)",
+        //     "Lebar (m)",
+        //     "Kedalaman (m)",
+        //     "Bahan",
+        //     "Kondisi",
+        //     "Arah Alir",
+        //     "Akhir Pembuangan",
+        //     "Foto"
+        // ],
+        // [
+        //     "Lat",
+        //     "Long",
+        //     "Nama Jalan",
+        //     "Kondisi Kerusakan",
+        //     "Foto"
+        // ],
+        // [
+        //     "Lat",
+        //     "Long",
+        //     "Nama Jalan",
+        //     "Foto"
+        // ]];
+
+        //Read the Excel File data.
+        var workbook = XLSX.read(data, {
+            type: 'binary'
+        });
+ 
+        
+        for(let i = 0; i < 3; i++){
+            //Fetch the name of Sheet.
+            var sheet = workbook.SheetNames[i];
+            //Read all rows from First Sheet into an JSON array.
+            var excelRows = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
+            if(excelRows.length > 0){
+                let header = []
+                const columnCount = XLSX.utils.decode_range(workbook.Sheets[sheet]['!ref']).e.c + 1
+                for (let j = 0; j < columnCount; ++j) {
+                    // console.log(workbook.Sheets[sheet][`${XLSX.utils.encode_col(j)}1`]);
+                    if(workbook.Sheets[sheet][`${XLSX.utils.encode_col(j)}1`]){
+                        header[j] = workbook.Sheets[sheet][`${XLSX.utils.encode_col(j)}1`].v
+                    }
+                }
+
+                // console.log(header);
+                // console.log(excelRows);
+
+                //Create a HTML Table element.
+                var table = document.createElement("table");
+                table.border = "1";
+        
+                //Add the header row.
+                var row = table.insertRow(-1);
+
+                //Add the header cells.
+                header.forEach(el => {
+                    var headerCell = document.createElement("TH");
+                    headerCell.innerHTML = el;
+                    row.appendChild(headerCell);
+                });
+
+                if(excelRows.length>0){
+                    //Add the data rows from Excel file.
+                    for (let j = 0; j < excelRows.length; j++) {
+                        //Add the data row.
+                        var row = table.insertRow(-1);
+                        if(i == 0){
+                            const idx = drainase.findIndex(el => 
+                                el["nama_jalan"] == excelRows[j]["Nama Jalan"] && el["panjang"] == excelRows[j]["Panjang (m/km)"].split(" ")[0]
+                            );
+                            if(idx >= 0){
+                                drainase[idx].coords.push([excelRows[j]["Lat"],excelRows[j]["Long"]]);
+                            }
+                            else{
+                                let panjang = excelRows[j]["Panjang (m/km)"].split(" ")[0];
+                                let lebar = excelRows[j]["Lebar (m)"].split(" ")[0];
+                                let kedalaman = excelRows[j]["Kedalaman (m)"].split(" ")[0];
+                                drainase.push({
+                                    nama_jalan: excelRows[j]["Nama Jalan"],
+                                    lebar: lebar,
+                                    panjang: panjang,
+                                    kedalaman: kedalaman,
+                                    bahan: excelRows[j]["Bahan"],
+                                    kondisi: excelRows[j]["Kondisi"],
+                                    akhir_pembuangan: excelRows[j]["Akhir Pembuangan"],
+                                    arah_alir: excelRows[j]["Arah Alir"],
+                                    foto: "-",
+                                    tipe_drainase: "parit",
+                                    coords: [[excelRows[j]["Lat"],excelRows[j]["Long"]]]
+                                })
+                            }
+                        }
+                        
+                        header.forEach(el => {
+                            var cell = row.insertCell(-1);
+                            cell.innerHTML = excelRows[j][el] ? excelRows[j][el] : "-";
+                        });
+                    }
+                }
+                else{
+                    var row = table.insertRow(-1);
+                    var cell = row.insertCell(-1);
+                    cell.colSpan = header.length;
+                    cell.innerHTML = "Tidak ada data";
+                }
+                
+                const ExcelName = [
+                    "Jaringan Drainase",
+                    "Titik Lokasi Banjir",
+                    "Parit Tersumbat"   
+                ]
+                console.log(drainase);
+                if(i == 0){
+                    drainase.forEach(el=>{
+                        const geo = {
+                            type: "MultiLine",
+                            coordinates: el.coords
+                        }
+                        fetch('api.php',{
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ 
+                                asdf: `INSERT INTO drainases(id, id_admin, nama_jalan, panjang, lebar, kedalaman, bahan, kondisi, arah_alir, akhir_pembuangan, foto, tipe_drainase, geometry) VALUES (uuid(),[value-2],"${el.nama_jalan}",${el.panjang},${el.lebar},${el.kedalaman},"${el.bahan}","${el.kondisi}","${el.arah_alir}","${el.akhir_pembuangan}","${el.foto}","${el.tipe_drainase}",${JSON.stringify(geo)})\n` }),
+                        })
+                    })
+                }
+                
+                var dvExcel = document.getElementsByClassName("dvExcel")[i];
+                dvExcel.innerHTML = `<h1>${ExcelName[i]}</h1>`;
+                dvExcel.appendChild(table);
+            }
+        }
+    };
+</script>
+</html>
+<!-- INSERT INTO `drainases`(`id`, `id_admin`, `nama_jalan`, `panjang`, `lebar`, `kedalaman`, `bahan`, `kondisi`, `arah_alir`, `akhir_pembuangan`, `foto`, `tipe_drainase`, `geometry`, `created_at`, `updated_at`) 
+    VALUES (uuid(),[value-2],[value-3],[value-4],[value-5],[value-6],[value-7],[value-8],[value-9],[value-10],[value-11],[value-12],[value-13],[value-14],[value-15]) -->

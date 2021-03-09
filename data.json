@@ -1,15 +1,15 @@
 [
     {
         "show" : "Anak Sungai",
-        "value" : "anakSungai.geojson"
+        "value" : "AnakSungai.geojson"
     },
     {
         "show" : "Batas Citra",
-        "value" : "batasCitra.geojson"
+        "value" : "BatasCitra.geojson"
     },
     {
         "show" : "Batas Kelurahan",
-        "value" : "batasKelurahan.geojson"
+        "value" : "BatasKelurahan.geojson"
     },
     {
         "show" : "DAS AR",
@@ -54,5 +54,49 @@
     {
         "show" : "Transportasi",
         "value" : "Titik2GenganBanjir.geojson"
+    },
+    {
+        "show" : "SUBDAS",
+        "value" : "Subdas.geojson"
+    },
+    {
+        "show" : "Genangan",
+        "value" : "Genangan.geojson"
+    },
+    {
+        "show" : "Kolam Eksisting",
+        "value" : "KolamEksisting.geojson"
+    },
+    {
+        "show" : "Kualitas Aliran",
+        "value" : "KualitasAliran.geojson"
+    },
+    {
+        "show" : "Masalah",
+        "value" : "Masalah.geojson"
+    },
+    {
+        "show" : "Rekomendasi Bangunan Terjun",
+        "value" : "RekomendasiBangunanTerjun.geojson"
+    },
+    {
+        "show" : "Rekomendasi Kolam Sedimen",
+        "value" : "RekomendasiKolamSedimen.geojson"
+    },
+    {
+        "show" : "Rekomendasi Sistem Pompa",
+        "value" : "RekomendasiSistemPompa.geojson"
+    },
+    {
+        "show" : "Rekomendasi Waterpond",
+        "value" : "RekomendasiWaterpond.geojson"
+    },
+    {
+        "show" : "Stasiun Pompa",
+        "value" : "StasiunPompa.geojson"
+    },
+    {
+        "show" : "Tanggul",
+        "value" : "Tanggul.geojson"
     }
 ]
