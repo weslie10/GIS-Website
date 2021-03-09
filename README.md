@@ -1,5 +1,5 @@
 # Aplikasi GIS dan LeafletJS
-Menampilkan berbagai jenis data dari GeoJSON yang diconvert dari QGIS dan kemudian di olah dan digambar di LeafLetJS
+Menampilkan berbagai jenis data dari GeoJSON yang diconvert dari QGIS dan kemudian di olah dan digambar di Leaflet JS
 
 ## How to use
 1. Install XAMPP atau sejenisnya. Bisa download [disini](https://www.apachefriends.org/download.html)
